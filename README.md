@@ -1,16 +1,57 @@
-# Getting Started with GitHub Copilot
+from docx import Document
+from docx.shared import Inches, Pt
+from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
+from docx.oxml.ns import qn
+from docx.oxml import OxmlElement
 
-<img src="https://octodex.github.com/images/Professortocat_v2.png" align="right" height="200px" />
+# יצירת המסמך
+doc = Document()
 
-Hey @yaird26!
+# כותרת ראשית
+doc.add_heading('טבלת משימות יומית לשיפור מצב כלכלי', level=1)
 
-Mona here. I'm done preparing your exercise. Hope you enjoy! 💚
+# טבלת משימות
+table = doc.add_table(rows=1, cols=3)
+table.style = 'Table Grid'
+hdr_cells = table.rows[0].cells
+hdr_cells[0].text = 'קטגוריה'
+hdr_cells[1].text = 'משימה יומית'
+hdr_cells[2].text = 'בוצע ✅'
 
-Remember, it's self-paced so feel free to take a break! ☕️
+tasks = [
+    ('תודעה כלכלית', 'לכתוב 3 דברים שאני מודה עליהם שקשורים לשפע'),
+    ('תודעה כלכלית', 'לומר 3 הצהרות עוצמתיות על כסף ומימוש'),
+    ('תודעה כלכלית', 'לדמיין רגע אחד שבו הרגשתי שפע או חופש כלכלי'),
+    ('שליטה בכסף', 'לעדכן טבלת הוצאות והכנסות (גם אם לא קניתי כלום)'),
+    ('שליטה בכסף', 'לבדוק איפה אפשר לחסוך 5 ש"ח היום'),
+    ('יצירת כסף חדש', 'לפרסם משהו למכירה או להציע שירות קטן (גם סטורי)'),
+    ('יצירת כסף חדש', 'לחשוב על כישרון אחד שלי ולכתוב רעיון לרווח ממנו'),
+    ('למידה כלכלית', 'לראות סרטון/לקרוא 5-10 דקות על כסף או שיווק'),
+    ('חזון עתידי', 'לקרוא את תיאור "היום האידיאלי שלי בעוד שנה"'),
+    ('חזון עתידי', 'לכתוב תוספת קטנה לחלום שלי (מקום, תחושה, עשייה)')
+]
 
-[![](https://img.shields.io/badge/Go%20to%20Exercise-%E2%86%92-1f883d?style=for-the-badge&logo=github&labelColor=197935)](https://github.com/yaird26/skills-getting-started-with-github-copilot/issues/1)
+for category, task in tasks:
+    row_cells = table.add_row().cells
+    row_cells[0].text = category
+    row_cells[1].text = task
+    row_cells[2].text = ''
 
----
+# הוספת תיאור יום אידיאלי
+doc.add_page_break()
+doc.add_heading('תיאור היום האידיאלי שלי בעוד שנה', level=2)
+day_text = """
+בוקר טוב! אני קם ב___________ (מקום).  
+אני קם בשעה ___ ומרגיש __________.  
+אני מתחיל את היום שלי עם __________.  
+החשבון שלי מראה שיש בו ______ ש"ח, וזה גורם לי להרגיש _________.  
+אני פועל על פי הלב שלי ומרוויח כסף מ______________.  
+אני פוגש אנשים שמעריכים אותי כי אני ____________________.  
+בערב אני מרגיש __________ כי אני חי את החיים שתמיד רציתי.
+"""
+doc.add_paragraph(day_text)
 
-&copy; 2025 GitHub &bull; [Code of Conduct](https://www.contributor-covenant.org/version/2/1/code_of_conduct/code_of_conduct.md) &bull; [MIT License](https://gh.io/mit)
-
+# שמירת הקובץ
+file_path = "/mnt/data/טבלת_שפע_כלכלי_יומי.docx"
+doc.save(file_path)
+file_path
