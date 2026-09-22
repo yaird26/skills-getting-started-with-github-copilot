@@ -21,11 +21,16 @@ are in [`brand/social-config.json`](brand/social-config.json).
 
 ## YD Perfums visual design system
 
-All new educational posts, carousel covers, inner carousel slides and
-highlight covers follow [`brand/design-system.md`](brand/design-system.md):
-luxury, minimal, warm cream background, thin gold frame, refined serif
-headlines, thin spaced secondary type, centered layout, lots of negative
-space, and a soft centered YD watermark. No loud, colorful or cluttered
-designs. Reference images live in `brand/design/references/`; use them for
-style only and never copy their text unless asked. Render designs with
-`brand/design/render.js`.
+Content is **reels-first**: each educational topic ships as a reel, with a
+supporting carousel and an optional highlight cover. All static designs follow
+[`brand/design-system.md`](brand/design-system.md) (v2 editorial):
+- Luxury editorial layouts with strong hierarchy and structured sections:
+  running headers, page numbers, tables, framed insight boxes, pull quotes
+  and diagrams.
+- Asymmetric RTL layouts. Vary the layout from slide to slide while keeping
+  the palette and type constant.
+- Never plain centered text on beige, Canva-style layouts or childish icons.
+
+Render with `brand/design/render.js`. Until the user picks one of the three
+directions in `brand/design/directions/`, ask which direction to use before
+producing final designs.

@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="he"><head><meta charset="utf-8">
+<!-- Direction A — "Journal": luxury magazine editorial. Asymmetric grid, oversized Bodoni numerals, running header, pull quotes. -->
+<style>
+.A { --pad: 84px; background: radial-gradient(ellipse at 70% 30%, var(--paper) 0%, var(--cream) 60%, var(--cream-deep) 100%); }
+.A .frame { position: absolute; inset: 36px; border: 1px solid var(--hair); pointer-events: none; }
+.A .runhead { position: absolute; top: 74px; right: var(--pad); left: var(--pad); display: flex; justify-content: space-between; align-items: baseline;
+  padding-bottom: 18px; border-bottom: 1px solid var(--hair); }
+.A .brand { font-family: var(--lat-display); font-size: 22px; letter-spacing: .42em; color: var(--ink); direction: ltr; }
+.A .issue { font-family: var(--he-sans); font-weight: 300; font-size: 22px; letter-spacing: .08em; color: var(--ink-3); }
+.A .issue b { font-family: var(--lat-display); font-weight: 400; color: var(--gold); letter-spacing: .1em; }
+.A .foot { position: absolute; bottom: 70px; right: var(--pad); left: var(--pad); display: flex; justify-content: space-between; align-items: center;
+  padding-top: 18px; border-top: 1px solid var(--hair); }
+.A .foot .handle { font-family: var(--lat-serif); font-style: italic; font-size: 26px; color: var(--ink-3); direction: ltr; }
+.A .folio { font-family: var(--lat-display); font-size: 26px; color: var(--ink); direction: ltr; letter-spacing: .08em; }
+.A .folio i { color: var(--gold); font-style: normal; }
+.A .label { font-family: var(--he-sans); font-weight: 400; font-size: 24px; letter-spacing: .1em; color: var(--gold); display: flex; gap: 16px; align-items: center; }
+.A .label .n { font-family: var(--lat-display); font-size: 26px; direction: ltr; }
+.A .label::after { content: ""; width: 64px; height: 1px; background: var(--gold); }
+.A .ghostnum { position: absolute; font-family: var(--lat-display); font-weight: 400; color: transparent; -webkit-text-stroke: 1.4px var(--gold-light);
+  line-height: .8; direction: ltr; opacity: .9; }
+
+/* A1 cover */
+.A1 .ghostnum { font-size: 640px; left: 40px; top: 170px; }
+.A1 .titleblock { position: absolute; right: var(--pad); top: 560px; width: 760px; }
+.A1 h1 { font-family: var(--he-display); font-weight: 600; font-size: 212px; line-height: .95; letter-spacing: -.01em; margin: 26px 0 18px; }
+.A1 .lat { font-family: var(--lat-display); font-style: italic; font-size: 46px; color: var(--gold); direction: ltr; text-align: right; }
+.A1 .dek { font-family: var(--he-sans); font-weight: 300; font-size: 31px; line-height: 1.5; color: var(--ink-2); margin-top: 34px; width: 540px; }
+.A1 .toc { position: absolute; left: var(--pad); bottom: 170px; width: 300px; border-right: 1px solid var(--hair); padding-right: 28px; }
+.A1 .toc h4 { font-family: var(--he-sans); font-weight: 500; font-size: 20px; letter-spacing: .2em; color: var(--ink-3); margin-bottom: 18px; }
+.A1 .toc div { font-family: var(--he-serif); font-size: 26px; color: var(--ink); padding: 9px 0; display: flex; gap: 14px; }
+.A1 .toc span { font-family: var(--lat-display); color: var(--gold); direction: ltr; font-size: 22px; }
+
+/* A2 breakdown table */
+.A2 .head { position: absolute; top: 180px; right: var(--pad); left: var(--pad); }
+.A2 h2 { font-family: var(--he-display); font-weight: 500; font-size: 80px; line-height: 1.05; margin-top: 22px; }
+.A2 .sub { font-family: var(--he-sans); font-weight: 300; font-size: 28px; color: var(--ink-3); margin-top: 14px; }
+.A2 table { position: absolute; top: 470px; right: var(--pad); left: var(--pad); width: calc(100% - 2 * var(--pad)); border-collapse: collapse; }
+.A2 tr { border-top: 1px solid var(--hair); }
+.A2 tr:last-child { border-bottom: 1px solid var(--hair); }
+.A2 td { padding: 30px 0; vertical-align: middle; }
+.A2 .nm { width: 44%; }
+.A2 .nm .l { font-family: var(--lat-display); font-style: italic; font-size: 40px; direction: ltr; text-align: right; color: var(--ink); }
+.A2 .nm .h { font-family: var(--he-sans); font-weight: 300; font-size: 25px; color: var(--ink-2); margin-top: 6px; }
+.A2 .bar { width: 30%; padding: 0 30px; }
+.A2 .track { height: 1px; background: var(--hair); position: relative; direction: ltr; }
+.A2 .track b { position: absolute; left: 0; top: -2px; height: 5px; background: var(--gold); }
+.A2 .track em { position: absolute; top: 14px; left: 0; font-family: var(--mono); font-style: normal; font-size: 17px; color: var(--ink-3); letter-spacing: .06em; }
+.A2 .pct { text-align: left; font-family: var(--lat-display); font-size: 64px; direction: ltr; color: var(--ink); white-space: nowrap; }
+.A2 .pct small { font-size: 30px; color: var(--gold); }
+.A2 .note { position: absolute; bottom: 150px; right: var(--pad); font-family: var(--he-sans); font-weight: 300; font-size: 21px; color: var(--ink-3); }
+
+/* A3 pull quote + two columns */
+.A3 .ghostq { position: absolute; top: 130px; left: 70px; font-family: var(--lat-display); font-size: 520px; line-height: 1; color: var(--gold-light); opacity: .28; direction: ltr; }
+.A3 .q { position: absolute; top: 250px; right: var(--pad); left: 150px; }
+.A3 blockquote { font-family: var(--he-display); font-weight: 500; font-size: 90px; line-height: 1.12; margin-top: 30px; }
+.A3 blockquote em { font-style: normal; color: var(--gold); }
+.A3 .cols { position: absolute; top: 660px; right: var(--pad); left: var(--pad); display: grid; grid-template-columns: 1fr 1fr; }
+.A3 .col { padding-left: 44px; }
+.A3 .col + .col { padding-left: 0; padding-right: 44px; border-right: 1px solid var(--hair); }
+.A3 .col h5 { font-family: var(--he-serif); font-weight: 500; font-size: 32px; margin-bottom: 14px; }
+.A3 .col p { font-family: var(--he-sans); font-weight: 300; font-size: 26px; line-height: 1.6; color: var(--ink-2); }
+.A3 .bottom { position: absolute; bottom: 190px; right: var(--pad); left: var(--pad); border-top: 1px solid var(--gold); border-bottom: 1px solid var(--gold);
+  padding: 26px 0; display: flex; gap: 26px; align-items: center; }
+.A3 .bottom .k { font-family: var(--he-sans); font-weight: 500; font-size: 21px; letter-spacing: .08em; color: var(--gold); white-space: nowrap; }
+.A3 .bottom p { font-family: var(--he-serif); font-size: 32px; }
+
+/* A4 reel cover (safe zone = centre 1080x1440 for the profile grid crop) */
+.A4 .runhead { top: 300px; } .A4 .foot { bottom: 290px; }
+.A4 .ghostnum { font-size: 760px; left: 30px; top: 470px; }
+.A4 .t { position: absolute; right: var(--pad); top: 860px; width: 820px; }
+.A4 h1 { font-family: var(--he-display); font-weight: 600; font-size: 230px; line-height: .95; margin: 24px 0 30px; }
+.A4 .hook { font-family: var(--he-serif); font-size: 50px; line-height: 1.3; }
+.A4 .hook em { font-style: normal; color: var(--gold); }
+</style></head><body>
+
+<section class="canvas p45 A A1" data-name="a1-cover">
+  <div class="frame"></div>
+  <div class="runhead"><div class="issue">סדרת לימוד · <b>Nº 03</b></div><div class="brand">YD PERFUMES</div></div>
+  <div class="ghostnum">03</div>
+  <div class="titleblock">
+    <div class="label"><span class="n">03</span>פרק שלישי</div>
+    <h1>ריכוזים</h1>
+    <div class="lat">On Concentration</div>
+    <div class="dek">Extrait, EDP, EDT — מה המספרים על הבקבוק באמת אומרים, ומה הם לא.</div>
+  </div>
+  <div class="toc"><h4>בפרק</h4>
+    <div><span>01</span>מה זה ריכוז</div><div><span>02</span>ארבע הדרגות</div><div><span>03</span>המיתוס הגדול</div></div>
+  <div class="foot"><div class="handle">@yd.perfums</div><div class="folio">01 <i>/ 06</i></div></div>
+</section>
+
+<section class="canvas p45 A A2" data-name="a2-breakdown">
+  <div class="frame"></div>
+  <div class="runhead"><div class="issue">ריכוזים · <b>Nº 03</b></div><div class="brand">YD PERFUMES</div></div>
+  <div class="head">
+    <div class="label"><span class="n">02</span>ארבע הדרגות</div>
+    <h2>כמה תמצית יש בבקבוק</h2>
+    <div class="sub">אחוז שמן הבושם מתוך הנוזל, והעמידות המשוערת על העור.</div>
+  </div>
+  <table>
+    <tr><td class="nm"><div class="l">Extrait de Parfum</div><div class="h">הכי עמוק, הכי קרוב לעור</div></td>
+        <td class="bar"><div class="track"><b style="width:100%"></b><em>8H+</em></div></td><td class="pct">20–40<small>%</small></td></tr>
+    <tr><td class="nm"><div class="l">Eau de Parfum</div><div class="h">האיזון הקלאסי</div></td>
+        <td class="bar"><div class="track"><b style="width:50%"></b><em>6–8H</em></div></td><td class="pct">15–20<small>%</small></td></tr>
+    <tr><td class="nm"><div class="l">Eau de Toilette</div><div class="h">קליל ופתוח יותר</div></td>
+        <td class="bar"><div class="track"><b style="width:37%"></b><em>3–5H</em></div></td><td class="pct">5–15<small>%</small></td></tr>
+    <tr><td class="nm"><div class="l">Eau de Cologne</div><div class="h">רענון קצר</div></td>
+        <td class="bar"><div class="track"><b style="width:12%"></b><em>≤2H</em></div></td><td class="pct">2–5<small>%</small></td></tr>
+  </table>
+  <div class="note">* טווחים מקובלים בתעשייה. כל בית בושם מגדיר אותם קצת אחרת.</div>
+  <div class="foot"><div class="handle">@yd.perfums</div><div class="folio">03 <i>/ 06</i></div></div>
+</section>
+
+<section class="canvas p45 A A3" data-name="a3-insight">
+  <div class="frame"></div>
+  <div class="runhead"><div class="issue">ריכוזים · <b>Nº 03</b></div><div class="brand">YD PERFUMES</div></div>
+  <div class="ghostq">“</div>
+  <div class="q"><div class="label"><span class="n">03</span>המיתוס הגדול</div>
+    <blockquote>ריכוז גבוה <em>לא אומר</em><br>ריח חזק יותר.</blockquote></div>
+  <div class="cols">
+    <div class="col"><h5>מה הריכוז כן קובע</h5><p>בעיקר עמידות — כמה זמן הבושם נשאר על העור. Extrait נוטה לשבת קרוב לגוף: עמוק, שקט ואינטימי.</p></div>
+    <div class="col"><h5>מה קובע את ההקרנה</h5><p>חומרי הגלם ומבנה הפורמולה. EDT עם תווים רעננים יכול להרגיש נוכח יותר בשעה הראשונה.</p></div>
+  </div>
+  <div class="bottom"><div class="k">בשורה התחתונה</div><p>בוחרים ריכוז לפי מה שרוצים מהריח — לא לפי המספר.</p></div>
+  <div class="foot"><div class="handle">@yd.perfums</div><div class="folio">05 <i>/ 06</i></div></div>
+</section>
+
+<section class="canvas p916 A A4" data-name="a4-reel-cover">
+  <div class="frame"></div>
+  <div class="runhead"><div class="issue">סדרת לימוד · <b>Nº 03</b></div><div class="brand">YD PERFUMES</div></div>
+  <div class="ghostnum">03</div>
+  <div class="t"><div class="label"><span class="n">03</span>ריכוזים</div>
+    <h1>ריכוזים</h1>
+    <div class="hook">Extrait הוא לא ״חזק יותר״.<br><em>הוא משהו אחר.</em></div></div>
+  <div class="foot"><div class="handle">@yd.perfums</div><div class="folio">REEL</div></div>
+</section>
+</body></html>

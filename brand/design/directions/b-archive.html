@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="he"><head><meta charset="utf-8">
+<!-- Direction B — "Archive": perfumer's formula card / archival specimen sheet. Grid, crop marks, mono metadata, line diagrams, spec cells. -->
+<style>
+.B { --pad: 80px; background: var(--paper); }
+.B .grid { position: absolute; inset: 56px; pointer-events: none;
+  background-image: linear-gradient(to left, rgba(168,132,76,.10) 1px, transparent 1px); background-size: calc((1080px - 112px) / 6) 100%; }
+.B .box { position: absolute; inset: 56px; border: 1px solid var(--hair); pointer-events: none; }
+.B .tick { position: absolute; width: 22px; height: 22px; border-color: var(--gold); border-style: solid; border-width: 0; }
+.B .tick.tr { top: 44px; right: 44px; border-top-width: 1px; border-right-width: 1px; }
+.B .tick.tl { top: 44px; left: 44px; border-top-width: 1px; border-left-width: 1px; }
+.B .tick.br { bottom: 44px; right: 44px; border-bottom-width: 1px; border-right-width: 1px; }
+.B .tick.bl { bottom: 44px; left: 44px; border-bottom-width: 1px; border-left-width: 1px; }
+.B .meta { position: absolute; top: 82px; right: var(--pad); left: var(--pad); display: flex; justify-content: space-between;
+  font-family: var(--mono); font-size: 17px; letter-spacing: .14em; color: var(--ink-3); direction: ltr; padding-bottom: 16px; border-bottom: 1px solid var(--hair); }
+.B .meta b { color: var(--ink); font-weight: 400; }
+.B .meta.bottom { top: auto; bottom: 80px; border-bottom: 0; border-top: 1px solid var(--hair); padding: 16px 0 0; }
+.B .sec { font-family: var(--mono); font-size: 19px; letter-spacing: .12em; color: var(--gold); direction: ltr; text-align: right; }
+.B .sec span { font-family: var(--he-sans); letter-spacing: .04em; font-size: 22px; }
+.B .ring { fill: none; stroke: var(--gold); stroke-width: 1; }
+.B .lead { stroke: var(--ink-3); stroke-width: .8; }
+.B svg text { font-family: var(--mono); font-size: 15px; letter-spacing: .12em; fill: var(--ink-2); }
+
+/* B1 cover */
+.B1 .title { position: absolute; right: var(--pad); top: 190px; width: 480px; }
+.B1 h1 { font-family: var(--he-serif); font-weight: 300; font-size: 176px; line-height: 1; margin: 24px 0 10px; }
+.B1 .latin { font-family: var(--mono); font-size: 20px; letter-spacing: .22em; color: var(--ink-3); direction: ltr; text-align: right; }
+.B1 .dek { font-family: var(--he-sans); font-weight: 300; font-size: 28px; line-height: 1.55; color: var(--ink-2); margin-top: 40px; padding-top: 30px; border-top: 1px solid var(--hair); }
+.B1 svg.dia { position: absolute; left: 70px; top: 300px; }
+.B1 .specs { position: absolute; right: var(--pad); left: var(--pad); bottom: 150px; display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--ink); }
+.B1 .spec { padding: 24px 26px 0; border-left: 1px solid var(--hair); }
+.B1 .spec:last-child { border-left: 0; }
+.B1 .spec .v { font-family: var(--lat-display); font-size: 56px; direction: ltr; text-align: right; }
+.B1 .spec .k { font-family: var(--he-sans); font-weight: 400; font-size: 22px; color: var(--ink-3); margin-top: 4px; }
+
+/* B2 2x2 cards */
+.B2 .head { position: absolute; top: 170px; right: var(--pad); left: var(--pad); }
+.B2 h2 { font-family: var(--he-serif); font-weight: 400; font-size: 70px; margin-top: 16px; }
+.B2 .cards { position: absolute; top: 360px; right: var(--pad); left: var(--pad); display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+.B2 .card { border: 1px solid var(--hair); background: rgba(255,255,255,.28); padding: 28px 30px 30px; height: 382px; position: relative; }
+.B2 .card.hi { border-color: var(--gold); background: rgba(168,132,76,.07); }
+.B2 .card .top { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 16px; letter-spacing: .16em; color: var(--gold); direction: ltr; }
+.B2 .card .nm { font-family: var(--lat-serif); font-style: italic; font-size: 38px; direction: ltr; text-align: right; margin-top: 18px; }
+.B2 .card .pct { font-family: var(--lat-display); font-size: 84px; direction: ltr; text-align: right; line-height: 1; margin-top: 8px; }
+.B2 .card .pct small { font-size: 36px; color: var(--gold); }
+.B2 .rows { margin-top: 22px; border-top: 1px solid var(--hair); }
+.B2 .row { display: flex; justify-content: space-between; align-items: center; padding: 11px 0; border-bottom: 1px solid var(--hair);
+  font-family: var(--he-sans); font-size: 21px; color: var(--ink-2); }
+.B2 .row .v { font-family: var(--mono); font-size: 17px; letter-spacing: .06em; direction: ltr; color: var(--ink); }
+.B2 .meter { display: flex; gap: 5px; direction: ltr; }
+.B2 .meter i { width: 18px; height: 5px; border: 1px solid var(--gold); }
+.B2 .meter i.f { background: var(--gold); }
+
+/* B3 myth vs reality + insight box */
+.B3 .head { position: absolute; top: 170px; right: var(--pad); left: var(--pad); }
+.B3 h2 { font-family: var(--he-serif); font-weight: 400; font-size: 76px; margin-top: 16px; }
+.B3 .vs { position: absolute; top: 360px; right: var(--pad); left: var(--pad); display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--hair); }
+.B3 .side { padding: 34px 34px 38px; }
+.B3 .side + .side { border-right: 1px solid var(--hair); background: rgba(168,132,76,.07); }
+.B3 .side .tag { display: inline-block; font-family: var(--mono); font-size: 16px; letter-spacing: .18em; color: var(--gold); border: 1px solid var(--gold); padding: 6px 12px; direction: ltr; }
+.B3 .side h4 { font-family: var(--he-serif); font-weight: 400; font-size: 38px; line-height: 1.3; margin: 24px 0 16px; }
+.B3 .side.myth h4 { color: var(--ink-3); text-decoration: line-through; text-decoration-color: var(--gold); text-decoration-thickness: 1px; }
+.B3 .side p { font-family: var(--he-sans); font-weight: 300; font-size: 25px; line-height: 1.6; color: var(--ink-2); }
+.B3 .insight { position: absolute; right: var(--pad); left: var(--pad); top: 740px; padding: 40px 44px; background: var(--ink); color: var(--paper); }
+.B3 .insight .k { font-family: var(--mono); font-size: 16px; letter-spacing: .2em; color: var(--gold-light); direction: ltr; text-align: right; }
+.B3 .insight p { font-family: var(--he-serif); font-size: 38px; line-height: 1.4; margin-top: 16px; }
+.B3 .insight p em { font-style: normal; color: var(--gold-light); }
+
+/* B4 reel cover */
+.B4 .meta { top: 290px; } .B4 .meta.bottom { top: auto; bottom: 280px; }
+.B4 svg.dia { position: absolute; left: 50%; top: 400px; transform: translateX(-50%); }
+.B4 .t { position: absolute; right: var(--pad); left: var(--pad); top: 1120px; }
+.B4 h1 { font-family: var(--he-serif); font-weight: 300; font-size: 190px; line-height: 1; margin-top: 18px; }
+.B4 .hook { font-family: var(--he-sans); font-weight: 300; font-size: 42px; line-height: 1.4; color: var(--ink-2); margin-top: 20px; }
+.B4 .hook b { font-weight: 500; color: var(--ink); }
+</style></head><body>
+
+<section class="canvas p45 B B1" data-name="b1-cover">
+  <div class="grid"></div><div class="box"></div>
+  <i class="tick tr"></i><i class="tick tl"></i><i class="tick br"></i><i class="tick bl"></i>
+  <div class="meta"><span>REF. <b>YD/EDU—03</b></span><span><b>YD PERFUMES</b> — ARCHIVE</span></div>
+  <div class="title">
+    <div class="sec">[ 03 ] <span>סדרת לימוד</span></div>
+    <h1>ריכוזים</h1>
+    <div class="latin">CONCENTRATION · 4 GRADES</div>
+    <div class="dek">Extrait, EDP, EDT, Cologne — מה המספרים על הבקבוק אומרים, ומה הם לא.</div>
+  </div>
+  <svg class="dia" width="420" height="720" viewBox="0 0 420 720">
+    <g transform="translate(210 330)">
+      <circle class="ring" r="190" opacity=".45"/><circle class="ring" r="145" opacity=".65"/><circle class="ring" r="100" opacity=".85"/>
+      <circle r="52" fill="var(--gold)" opacity=".9"/><circle class="ring" r="60"/>
+      <line class="lead" x1="0" y1="-190" x2="0" y2="-250"/><text x="0" y="-262" text-anchor="middle">EDC · 2–5%</text>
+      <line class="lead" x1="-103" y1="-103" x2="-150" y2="-150"/><text x="-150" y="-162" text-anchor="middle">EDT · 5–15%</text>
+      <line class="lead" x1="0" y1="100" x2="0" y2="250"/><text x="0" y="275" text-anchor="middle">EDP · 15–20%</text>
+      <text x="0" y="6" text-anchor="middle" style="fill:var(--paper);font-size:16px">EXT</text>
+    </g>
+    <text x="0" y="700" style="font-size:13px;fill:var(--ink-3)">FIG. 1 — DILUTION, OUTER TO CORE</text>
+  </svg>
+  <div class="specs">
+    <div class="spec"><div class="v">4</div><div class="k">דרגות ריכוז</div></div>
+    <div class="spec"><div class="v">2–40%</div><div class="k">תמצית בנוזל</div></div>
+    <div class="spec"><div class="v">2–8h+</div><div class="k">עמידות על העור</div></div>
+  </div>
+  <div class="meta bottom"><span>01 / 06</span><span>@yd.perfums</span></div>
+</section>
+
+<section class="canvas p45 B B2" data-name="b2-breakdown">
+  <div class="grid"></div><div class="box"></div>
+  <i class="tick tr"></i><i class="tick tl"></i><i class="tick br"></i><i class="tick bl"></i>
+  <div class="meta"><span>REF. <b>YD/EDU—03</b></span><span><b>YD PERFUMES</b> — ARCHIVE</span></div>
+  <div class="head"><div class="sec">[ 02 ] <span>ארבע הדרגות</span></div><h2>כרטיס ריכוז</h2></div>
+  <div class="cards">
+    <div class="card hi"><div class="top"><span>EXT</span><span>01</span></div><div class="nm">Extrait de Parfum</div><div class="pct">20–40<small>%</small></div>
+      <div class="rows"><div class="row">עמידות<span class="v">8H+</span></div><div class="row">קרבה לעור<span class="meter"><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i></span></div></div></div>
+    <div class="card"><div class="top"><span>EDP</span><span>02</span></div><div class="nm">Eau de Parfum</div><div class="pct">15–20<small>%</small></div>
+      <div class="rows"><div class="row">עמידות<span class="v">6–8H</span></div><div class="row">קרבה לעור<span class="meter"><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i></i></span></div></div></div>
+    <div class="card"><div class="top"><span>EDT</span><span>03</span></div><div class="nm">Eau de Toilette</div><div class="pct">5–15<small>%</small></div>
+      <div class="rows"><div class="row">עמידות<span class="v">3–5H</span></div><div class="row">קרבה לעור<span class="meter"><i class="f"></i><i class="f"></i><i></i><i></i><i></i></span></div></div></div>
+    <div class="card"><div class="top"><span>EDC</span><span>04</span></div><div class="nm">Eau de Cologne</div><div class="pct">2–5<small>%</small></div>
+      <div class="rows"><div class="row">עמידות<span class="v">≤2H</span></div><div class="row">קרבה לעור<span class="meter"><i class="f"></i><i></i><i></i><i></i><i></i></span></div></div></div>
+  </div>
+  <div class="meta bottom"><span>03 / 06</span><span>* INDUSTRY RANGES — VARY BY HOUSE</span></div>
+</section>
+
+<section class="canvas p45 B B3" data-name="b3-insight">
+  <div class="grid"></div><div class="box"></div>
+  <i class="tick tr"></i><i class="tick tl"></i><i class="tick br"></i><i class="tick bl"></i>
+  <div class="meta"><span>REF. <b>YD/EDU—03</b></span><span><b>YD PERFUMES</b> — ARCHIVE</span></div>
+  <div class="head"><div class="sec">[ 03 ] <span>מיתוס מול מציאות</span></div><h2>מה הריכוז באמת קובע</h2></div>
+  <div class="vs">
+    <div class="side myth"><span class="tag">MYTH</span><h4>ריכוז גבוה = ריח חזק יותר</h4><p>ההנחה הנפוצה: יותר תמצית, יותר נוכחות בחדר.</p></div>
+    <div class="side"><span class="tag">IN PRACTICE</span><h4>ריכוז קובע בעיקר עמידות</h4><p>Extrait נוטה לשבת קרוב לעור — עמוק ושקט. ההקרנה תלויה בחומרי הגלם ובמבנה הפורמולה.</p></div>
+  </div>
+  <div class="insight"><div class="k">YD NOTE</div><p>רוצים ריח שממלא את החדר? לשים לב <em>לחומרי הגלם</em> — לא רק לאחוזים.</p></div>
+  <div class="meta bottom"><span>05 / 06</span><span>@yd.perfums</span></div>
+</section>
+
+<section class="canvas p916 B B4" data-name="b4-reel-cover">
+  <div class="grid"></div><div class="box"></div>
+  <i class="tick tr"></i><i class="tick tl"></i><i class="tick br"></i><i class="tick bl"></i>
+  <div class="meta"><span>REF. <b>YD/EDU—03</b></span><span><b>YD PERFUMES</b> — ARCHIVE</span></div>
+  <svg class="dia" width="560" height="620" viewBox="0 0 560 620">
+    <g transform="translate(280 300)">
+      <circle class="ring" r="250" opacity=".4"/><circle class="ring" r="190" opacity=".6"/><circle class="ring" r="130" opacity=".85"/>
+      <circle r="66" fill="var(--gold)" opacity=".9"/><circle class="ring" r="76"/>
+      <text x="0" y="-262" text-anchor="middle">EDC</text><text x="0" y="-200" text-anchor="middle">EDT</text><text x="0" y="-140" text-anchor="middle">EDP</text>
+      <text x="0" y="6" text-anchor="middle" style="fill:var(--paper);font-size:18px">EXT</text>
+    </g>
+  </svg>
+  <div class="t"><div class="sec">[ 03 ] <span>סדרת לימוד</span></div><h1>ריכוזים</h1>
+    <div class="hook"><b>Extrait הוא לא ״חזק יותר״.</b> הוא משהו אחר.</div></div>
+  <div class="meta bottom"><span>REEL</span><span>@yd.perfums</span></div>
+</section>
+</body></html>

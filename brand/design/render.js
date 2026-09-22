@@ -1,107 +1,50 @@
 #!/usr/bin/env node
-// Render YD Perfums design-system slides from a JSON content file to PNGs.
+// Render YD Perfums editorial layouts to PNGs.
 //
-//   NODE_PATH=$(npm root -g) node brand/design/render.js brand/design/samples/content.json brand/design/samples
+//   NODE_PATH=$(npm root -g) node brand/design/render.js <layout.html> [outDir] [--sheet]
 //
-// Content format: see brand/design-system.md ("Content file").
+// Every <section class="canvas" data-name="..."> in the HTML file becomes <outDir>/<data-name>.png,
+// sized by the element itself (.p45 = 1080x1350 post, .p916 = 1080x1920 reel/story).
+// Fonts (fonts.css, inlined as data URIs so no CDN is needed) and base.css are injected automatically.
+// --sheet also writes <outDir>/<file>-sheet.png: every frame side by side, for quick review.
+// See brand/design-system.md.
 const fs = require("fs");
 const path = require("path");
 const { chromium } = require("playwright");
 
 const DIR = __dirname;
-// Fonts are inlined as data URIs so rendering works offline and without a font CDN.
 const FONTS = fs.readFileSync(path.join(DIR, "fonts.css"), "utf8").replace(/url\((fonts\/[^)]+)\)/g, (_, f) =>
   `url(data:font/woff2;base64,${fs.readFileSync(path.join(DIR, f)).toString("base64")})`);
-const CSS = FONTS + fs.readFileSync(path.join(DIR, "yd.css"), "utf8");
-const LOGO = ["yd-logo.svg", "yd-logo.png"].map((f) => path.join(DIR, "assets", f)).find((f) => fs.existsSync(f));
-
-const ICONS = {
-  drop: '<path d="M28 6C28 6 12 25 12 36a16 16 0 0 0 32 0C44 25 28 6 28 6z"/>',
-  leaf: '<path d="M10 46C10 22 26 10 48 8c0 24-14 38-38 38z"/><path d="M10 46L34 22"/>',
-  clock: '<circle cx="28" cy="28" r="20"/><path d="M28 16v12l8 6"/>',
-  flame: '<path d="M28 6c4 10 14 14 14 28a14 14 0 0 1-28 0c0-8 6-12 6-20 4 4 6 8 8 12 2-8 0-14 0-20z"/>',
-};
-
-const esc = (s = "") => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
-const isHebrew = (s = "") => /[֐-׿]/.test(s);
-const dirAttr = (s) => (isHebrew(s) ? ' dir="rtl"' : "");
-const titleClass = (s) => (isHebrew(s) ? "title" : "title latin");
-const lines = (s) => esc(s).replace(/\n/g, "<br>");
-
-function watermark(show) {
-  if (show === false) return "";
-  if (LOGO) {
-    const mime = LOGO.endsWith(".svg") ? "image/svg+xml" : "image/png";
-    return `<img class="watermark" src="data:${mime};base64,${fs.readFileSync(LOGO).toString("base64")}">`;
-  }
-  return '<div class="watermark">YD</div>';
-}
-
-function footer(brand) {
-  return `<div class="footer"><div class="mark">YD</div><div class="word">${esc(brand.wordmark)}</div></div>`;
-}
-
-const templates = {
-  highlight: (s, brand) => `
-    <div class="canvas highlight">
-      <div class="ring"></div>${watermark(s.watermark)}
-      <div class="stack">
-        <div class="eyebrow">${esc(brand.wordmark)}</div>
-        <div class="${titleClass(s.title)}"${dirAttr(s.title)}>${lines(s.title)}</div>
-        <div class="subtitle"${dirAttr(s.subtitle)}>${esc(s.subtitle)}</div>
-        <div class="rule"></div>
-        <div class="sig">YD</div>
-      </div>
-    </div>`,
-
-  cover: (s, brand) => `
-    <div class="canvas post cover">
-      <div class="frame"></div>${watermark(s.watermark)}
-      <div class="eyebrow"${dirAttr(s.category)}>${esc(s.category)}</div>
-      <div class="${titleClass(s.title)}"${dirAttr(s.title)}>${lines(s.title)}</div>
-      <div class="rule"></div>
-      ${s.subtitle ? `<div class="subtitle"${dirAttr(s.subtitle)}>${esc(s.subtitle)}</div>` : ""}
-      ${footer(brand)}
-    </div>`,
-
-  slide: (s, brand) => `
-    <div class="canvas post slide">
-      <div class="frame"></div>${watermark(s.watermark)}
-      <div class="eyebrow"${dirAttr(s.category)}>${esc(s.category)}</div>
-      <div class="${titleClass(s.title)}"${dirAttr(s.title)}>${lines(s.title)}</div>
-      ${s.latin ? `<div class="latin-sub">${esc(s.latin)}</div>` : ""}
-      <div class="rule"></div>
-      <div class="body"${dirAttr(s.title)}>
-        ${s.icon && ICONS[s.icon] ? `<svg class="icon" viewBox="0 0 56 56">${ICONS[s.icon]}</svg>` : ""}
-        ${(s.paragraphs || []).map((p) => `<p>${lines(p)}</p>`).join("")}
-        ${s.emphasis ? `<p class="emphasis">${lines(s.emphasis)}</p>` : ""}
-      </div>
-      ${s.counter ? `<div class="counter">${esc(s.counter)}</div>` : ""}
-      ${footer(brand)}
-    </div>`,
-};
-
-const SIZES = { highlight: [1080, 1920], cover: [1080, 1350], slide: [1080, 1350] };
+const BASE = FONTS + fs.readFileSync(path.join(DIR, "base.css"), "utf8");
 
 async function main() {
-  const [input, outDir = path.dirname(input || ".")] = process.argv.slice(2);
-  if (!input) throw new Error("usage: render.js <content.json> [outDir]");
-  const content = JSON.parse(fs.readFileSync(input, "utf8"));
-  const brand = { wordmark: "YD PERFUMES", ...content.brand };
+  const args = process.argv.slice(2);
+  const sheet = args.includes("--sheet");
+  const [input, outDir = path.dirname(input || ".")] = args.filter((a) => a !== "--sheet");
+  if (!input || !input.endsWith(".html")) throw new Error("usage: render.js <layout.html> [outDir] [--sheet]");
   fs.mkdirSync(outDir, { recursive: true });
 
   const browser = await chromium.launch();
-  for (const s of content.slides) {
-    const tpl = templates[s.type];
-    if (!tpl) throw new Error(`unknown slide type "${s.type}" (${s.file})`);
-    const [width, height] = SIZES[s.type];
-    const page = await browser.newPage({ viewport: { width, height } });
-    await page.setContent(`<!doctype html><html lang="he"><head><meta charset="utf-8"><style>${CSS}</style></head><body>${tpl(s, brand)}</body></html>`);
-    await page.evaluate(() => document.fonts.ready);
-    const file = path.join(outDir, `${s.file}.png`);
-    await page.screenshot({ path: file });
-    await page.close();
+  const page = await browser.newPage({ viewport: { width: 1080, height: 1920 } });
+  await page.setContent(fs.readFileSync(input, "utf8").replace("</head>", `<style>${BASE}</style></head>`));
+  await page.evaluate(() => document.fonts.ready);
+
+  const shots = [];
+  for (const el of await page.$$("section.canvas[data-name]")) {
+    const file = path.join(outDir, `${await el.getAttribute("data-name")}.png`);
+    await el.screenshot({ path: file });
+    shots.push(file);
     console.log("rendered", file);
+  }
+
+  if (sheet && shots.length) {
+    const imgs = shots.map((f) => `<img src="data:image/png;base64,${fs.readFileSync(f).toString("base64")}">`).join("");
+    const sp = await browser.newPage({ viewport: { width: 400, height: 400 } });
+    await sp.setContent(`<body style="margin:0;background:#d9d2c7"><div id="s" style="display:inline-flex;gap:40px;padding:40px;align-items:flex-start">${imgs}</div>
+      <style>img{height:1350px;width:auto;box-shadow:0 10px 40px rgba(0,0,0,.18)}</style></body>`);
+    const file = path.join(outDir, `${path.basename(input, ".html")}-sheet.png`);
+    await (await sp.$("#s")).screenshot({ path: file });
+    console.log("sheet", file);
   }
   await browser.close();
 }
