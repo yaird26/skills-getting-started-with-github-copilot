@@ -1,0 +1,174 @@
+/* YD Perfums — educational design system. Tokens + components shared by all formats. */
+/* Fonts are vendored in fonts.css (loaded by render.js before this file). */
+
+:root {
+  --bg: #f3ece1;          /* warm cream */
+  --bg-edge: #e9dfcf;     /* soft beige vignette */
+  --ink: #1f1b17;         /* headlines */
+  --ink-soft: #4d453d;    /* body */
+  --gold: #ab8a55;        /* accents, rules, frame */
+  --gold-soft: #c7ad80;
+
+  --serif-he: "Frank Ruhl Libre", "Cormorant Garamond", serif;
+  --serif-latin: "Cormorant Garamond", "Frank Ruhl Libre", serif;
+  --thin: "Assistant", sans-serif;
+
+  --frame-inset: 44px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+.canvas {
+  position: relative;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 50% 45%, var(--bg) 55%, var(--bg-edge) 100%);
+  color: var(--ink);
+  font-family: var(--serif-he);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* Thin double-hairline frame */
+.frame, .frame::after {
+  position: absolute;
+  inset: var(--frame-inset);
+  border: 1px solid var(--gold);
+  opacity: .55;
+  pointer-events: none;
+}
+.frame::after { content: ""; inset: 8px; opacity: .45; }
+
+/* Centered background monogram / logo */
+.watermark {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--serif-latin);
+  font-weight: 300;
+  font-size: 560px;
+  line-height: 1;
+  letter-spacing: -.02em;
+  color: var(--gold);
+  opacity: .07;
+  pointer-events: none;
+  white-space: nowrap;
+}
+img.watermark { width: 62%; height: auto; opacity: .06; }
+
+/* Thin, spaced secondary lines */
+.eyebrow {
+  font-family: var(--thin);
+  font-weight: 300;
+  font-size: 24px;
+  letter-spacing: .38em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.eyebrow[dir="rtl"] { letter-spacing: .12em; font-size: 28px; }
+
+.rule {
+  width: 72px; height: 1px;
+  background: var(--gold);
+  position: relative;
+  margin: 0 auto;
+}
+.rule::after { /* small diamond ornament */
+  content: ""; position: absolute; left: 50%; top: 50%;
+  width: 7px; height: 7px; border: 1px solid var(--gold);
+  background: var(--bg);
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.title {
+  font-family: var(--serif-he);
+  font-weight: 400;
+  line-height: 1.12;
+  color: var(--ink);
+}
+.title.latin { font-family: var(--serif-latin); font-weight: 400; letter-spacing: .02em; }
+
+.subtitle {
+  font-family: var(--thin);
+  font-weight: 200;
+  font-size: 30px;
+  letter-spacing: .3em;
+  color: var(--gold);
+}
+.subtitle[dir="rtl"] { letter-spacing: .1em; font-weight: 300; }
+
+.body p {
+  font-family: var(--thin);
+  font-weight: 300;
+  font-size: 34px;
+  line-height: 1.65;
+  color: var(--ink-soft);
+  text-wrap: pretty;
+}
+.body p + p { margin-top: 26px; }
+.body .emphasis {
+  font-family: var(--serif-he);
+  font-weight: 500;
+  font-size: 38px;
+  line-height: 1.45;
+  color: var(--ink);
+  margin-top: 40px;
+}
+
+.icon { width: 56px; height: 56px; stroke: var(--gold); fill: none; stroke-width: 1.1; }
+
+/* Brand footer */
+.footer {
+  position: absolute;
+  left: 0; right: 0;
+  bottom: calc(var(--frame-inset) + 48px);
+  display: flex; flex-direction: column; align-items: center; gap: 14px;
+}
+.footer .mark {
+  font-family: var(--serif-latin);
+  font-size: 34px; font-weight: 400; letter-spacing: .12em; color: var(--gold);
+}
+.footer .word {
+  font-family: var(--thin); font-weight: 300;
+  font-size: 18px; letter-spacing: .5em; color: var(--ink-soft);
+}
+.counter {
+  position: absolute;
+  bottom: calc(var(--frame-inset) + 56px);
+  inset-inline-end: calc(var(--frame-inset) + 48px);
+  font-family: var(--thin); font-weight: 300; font-size: 20px;
+  letter-spacing: .2em; color: var(--gold);
+}
+
+/* ---------- Formats ---------- */
+
+/* Highlight cover: 1080x1920 story; everything sits inside the 1080px centre circle IG crops to */
+.highlight { width: 1080px; height: 1920px; justify-content: center; }
+.highlight .ring {
+  position: absolute; top: 50%; left: 50%;
+  width: 960px; height: 960px; transform: translate(-50%, -50%);
+  border: 1px solid var(--gold); border-radius: 50%; opacity: .5;
+}
+.highlight .ring::after {
+  content: ""; position: absolute; inset: 10px;
+  border: 1px solid var(--gold); border-radius: 50%; opacity: .6;
+}
+.highlight .watermark { font-size: 460px; }
+.highlight .stack { position: relative; display: flex; flex-direction: column; align-items: center; gap: 44px; }
+.highlight .title { font-size: 104px; }
+.highlight .title.latin { font-size: 112px; }
+.highlight .sig { font-family: var(--serif-latin); font-size: 44px; letter-spacing: .14em; color: var(--gold); }
+
+/* Carousel cover + slides: 1080x1350 (4:5) */
+.post { width: 1080px; height: 1350px; padding: 150px 130px 0; }
+.post.cover { justify-content: center; padding-bottom: 120px; }
+.post.cover .title { font-size: 120px; margin: 44px 0 40px; }
+.post.cover .title.latin { font-size: 128px; }
+.post.cover .subtitle { margin-top: 40px; }
+.post.slide { justify-content: center; padding: 120px 130px 230px; }
+.post.slide .title { font-size: 88px; margin: 36px 0 12px; }
+.post.slide .latin-sub { font-family: var(--serif-latin); font-style: italic; font-size: 34px; color: var(--gold); letter-spacing: .06em; }
+.post.slide .rule { margin: 40px auto 52px; }
+.post.slide .body { max-width: 780px; }
+.post.slide .icon { margin: 0 auto 8px; }
