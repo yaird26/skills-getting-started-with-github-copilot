@@ -1,0 +1,34 @@
+{
+  "brand": "YD Perfums",
+  "handles": {
+    "instagram": "@yd.perfums"
+  },
+  "defaultLanguage": "he",
+  "textDirection": "rtl",
+  "languageOverride": {
+    "scope": "single-post",
+    "trigger": "Only when the user explicitly asks for another language for a specific post. Revert to Hebrew for the next post."
+  },
+  "appliesTo": [
+    "instagram.caption",
+    "tiktok.caption",
+    "youtubeShorts.title",
+    "youtubeShorts.description",
+    "cta",
+    "hook",
+    "hashtags"
+  ],
+  "keepInEnglish": [
+    "Brand name: YD Perfums",
+    "Product names",
+    "Selected hashtags (e.g. #YDPerfums, niche fragrance community tags)"
+  ],
+  "tone": ["direct", "elegant", "confident", "niche"],
+  "avoid": ["corporate wording", "translated-sounding Hebrew", "hard-sell clichés"],
+  "hashtags": {
+    "useOnlyWhenAppropriate": true,
+    "maxPerPost": { "instagram": 8, "tiktok": 5, "youtubeShorts": 3 },
+    "mix": "Mostly Hebrew, plus #YDPerfums and at most 1–2 English niche tags"
+  },
+  "guide": "brand/voice-hebrew.md"
+}
